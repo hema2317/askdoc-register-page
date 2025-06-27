@@ -7,21 +7,45 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSignUp = async () => {
-    const { error } = await supabase.auth.signUp({ email, password });
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
     if (error) {
-      setMessage(error.message);
+      setMessage(`❌ Error: ${error.message}`);
     } else {
-      setMessage('✅ Check your email to confirm your account!');
+      setMessage('✅ Check your email for confirmation!');
     }
   };
 
   return (
-    <div style={{ padding: '40px', fontFamily: 'Arial' }}>
-      <h1>🩺 AskDoc - Create Account</h1>
-      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} /><br /><br />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} /><br /><br />
-      <button onClick={handleSignUp}>Register</button>
+    <div style={{ padding: 40, fontFamily: 'Arial' }}>
+      <h1>Register with AskDoc</h1>
+      <form onSubmit={handleRegister}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          style={{ padding: 8, width: 250 }}
+        />
+        <br /><br />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          style={{ padding: 8, width: 250 }}
+        />
+        <br /><br />
+        <button type="submit" style={{ padding: '8px 20px' }}>
+          Sign Up
+        </button>
+      </form>
       <p>{message}</p>
     </div>
   );
